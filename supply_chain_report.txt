@@ -1,0 +1,7 @@
+===========================================
+      FARM SUPPLY CHAIN ANALYSIS REPORT    
+===========================================
+Total Processed Entities: 4
+Entity Breakdown: {'Farm': 1, 'Processing Unit': 1, 'Distributor': 1, 'Retailer': 1}
+Status: Phase 2 Core Pipeline Executed Successfully.
+===========================================
