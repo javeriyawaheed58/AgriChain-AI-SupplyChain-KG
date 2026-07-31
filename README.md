@@ -1,176 +1,357 @@
-🌾 AgriChain AI: Enterprise Farm Supply Chain Knowledge Graph & Traceability Engine
+🌾 AgriChain AI
+Enterprise Farm Supply Chain AI Agent & Knowledge Graph System
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](https://opensource.org/licenses/MIT)
-[![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688.svg)](https://fastapi.tiangolo.com/)
-[![Neo4j](https://img.shields.io/badge/Neo4j-5.x-008CC1.svg)](https://neo4j.com/)
-[![LLM Engine](https://img.shields.io/badge/LLM-LLaMA--3.3--70B-orange.svg)](https://groq.com/)
-[![React](https://img.shields.io/badge/React-18-61DAFB.svg)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.x-38BDF8.svg)](https://tailwindcss.com/)
+*Natural Language Querying · Real-Time Knowledge Graph · End-to-End Batch Traceability*
 
-An enterprise-ready, agentic AI platform designed for agricultural supply chain operations. AgriChain AI bridges natural language querying with **Neo4j Knowledge Graphs** via an optimized **LLaMA-3.3-70B Text-to-Cypher engine**, enabling instant origin tracing, defective batch detection, and dynamic logistics visualization.
+[![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.110-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Neo4j](https://img.shields.io/badge/Neo4j-Graph_DB-008CC1?logo=neo4j&logoColor=white)](https://neo4j.com/)
+[![LangChain](https://img.shields.io/badge/LangChain-Groq-1C3C3C?logo=langchain&logoColor=white)](https://www.langchain.com/)
+[![Groq](https://img.shields.io/badge/LLM-Llama_3.3_70B-F55036?logo=meta&logoColor=white)](https://groq.com/)
+[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](#license)
 
-🌟 Executive Summary & Problem Statement
+</div>
 
-Modern agricultural supply chains suffer from fragmented tracking systems, making defective stock recall and origin auditing slow and prone to errors. When a bad batch arrives at a distribution hub, manual lookup across multiple relational tables delays critical decisions.
+---
 
-AgriChain AI solves this by:
-1. Graph-Native Modeling: Modeling entity relationships directly ($Farm \xrightarrow{\text{PRODUCED}} Batch \xrightarrow{\text{SHIPPED\_VIA}} Shipment$).
-2. Natural Language Interface: Allowing operators to ask natural language questions (e.g., *"Which farm produced BATCH-101 and when was it harvested?"*) without knowing Cypher or SQL.
-3. Real-Time Visual Trace: Rendering interactive force-directed graph trails alongside contextual AI text responses.
-   
+## 📖 Executive Overview
 
-✨ Key Platform Features
+**AgriChain AI** is a production-grade, AI-powered supply chain intelligence platform purpose-built for the agricultural sector. It combines a **Neo4j graph database**, a **LangChain + Groq-powered natural language reasoning engine**, and a **real-time interactive graph visualization frontend** to give farm supply chain operators instant, conversational access to their entire distribution network — from farm to retailer.
 
-- 🧠 Agentic Text-to-Cypher Engine: Converts natural language prompts into optimized, syntactically correct Cypher graph database queries powered by LangChain and Groq.
-- 🕸️ Interactive Knowledge Graph Explorer: 2D interactive force graph visualization utilizing physics simulation to render connected nodes (Farms, Batches, Shipments) and custom edges.
-- 🚚 End-to-End Batch Traceability Stepper: Visual step-by-step audit trail component mapping harvest dates, quality audits, carrier assignments, and transit statuses.
-- 🎨 Adaptive UI & Dual Theme Architecture: Native Dark and Light theme switching across all views, graph containers, and notification modals.
-- 📊 Enterprise KPI Dashboard: Provides actionable metrics, system logs, and intelligent recommendations for supply chain optimization.
+### The Problem
 
+Modern farm supply chains generate enormous volumes of relational data — farms, harvest batches, shipments, warehouses, quality inspections, and retail deliveries — but this data is typically siloed across relational databases and spreadsheets that are painfully slow to query for two mission-critical questions:
 
-🏗️ System Architecture & Workflow
-               ┌─────────────────────────────────────────┐
-               │           React 18 Frontend             │
-               │   (Tailwind CSS, Force-Graph-2D, Vite)  │
-               └────────────────────┬────────────────────┘
-                                    │
-                         HTTP REST  │ POST /api/query
-                                    ▼
-               ┌─────────────────────────────────────────┐
-               │            FastAPI Backend              │
-               └────────────────────┬────────────────────┘
-                                    │
-             ┌──────────────────────┴──────────────────────┐
-             │                                             │
-             ▼                                             ▼
-┌─────────────────────────┐                   ┌──────────────────────────┐
-│  LangChain + Groq LLM   │                   │ Neo4j Graph Database     │
-│  (LLaMA-3.3-70B Model)  │                   │ (Bolt Protocol Driver)   │
-└────────────┬────────────┘                   └────────────┬─────────────┘
-             │ Generates Cypher                            │ Executes Query
-             └──────────────────────┬──────────────────────┘
-                                    │
-                                    ▼
-                      ┌──────────────────────────┐
-                      │  Structured Graph JSON   │
-                      │  Payload + Visual Trace  │
-                      └──────────────────────────┘
+1. **"Where did this batch actually come from, and where did it go?"** — Batch Origin Traceability
+2. **"Which other batches are at risk given this one defective shipment?"** — Defective Stock Detection & Containment
 
-                      
-🗄️ Knowledge Graph Entity Relationship Model
-The graph structure is defined by the following directional relationship schema:
+Traditional SQL-based systems require multiple slow, hand-written JOIN queries to answer these questions, and non-technical staff (quality managers, compliance officers, operations leads) cannot self-serve this information without engineering support.
 
-$$\text{(Farm:Farm)} \xrightarrow{[:\text{PRODUCED}]} \text{(Batch:Batch)} \xrightarrow{[:\text{SHIPPED\_VIA}]} \text{(Shipment:Shipment)}$$
-Farm Node: Properties include id, name, location.
-Batch Node: Properties include id, product, quantity, harvest_date.
-Shipment Node: Properties include id, carrier, status, dispatch_date.
+### The Solution
 
+AgriChain AI models the entire supply chain as a **native property graph**, allowing multi-hop traceability questions to be answered in milliseconds via graph traversal instead of expensive relational joins. A **natural language interface**, powered by `llama-3.3-70b-versatile` via Groq and orchestrated through LangChain, translates plain-English questions into validated Cypher queries — removing the technical barrier entirely. Results are rendered as an interactive, force-directed knowledge graph and a chronological traceability timeline, giving operators both the "what" and the "why" in one interface.
 
-📂 Repository Structure
-AgriChain-AI-SupplyChain-KG/
+---
 
-├── backend/
-│   ├── app.py                 # FastAPI Web Server & Router Definitions
-│   ├── core_logic.py          # Text-to-Cypher Chain & LangChain Groq Pipeline
-│   ├── database.py            # Neo4j Driver Connection & Cypher Execution Wrappers
-│   └── report_generator.py    # PDF Audit Report Exporter Utility
-├── frontend/
-│   ├── src/
-│   │   ├── components/        # Header, Sidebar, Legend Controls
-│   │   ├── pages/             # Dashboard, Chat, KnowledgeGraph, Traceability
-│   │   ├── App.jsx            # Main App Layout & Theme Router
-│   │   └── main.jsx           # React DOM Entrypoint
-│   ├── package.json
-│   └── tailwind.config.js
-├── data/                      # Sample Datasets & Ingestion Scripts
-├── screenshots/               # Architectural Verification Screenshots
-├── .gitignore
-├── README.md
-└── docker-compose.yml
+## ✨ Key Features
 
+- 🗣️ **Natural Language Cypher Querying** — Ask questions in plain English; the system generates and safely executes the corresponding Cypher query against Neo4j.
+- 🕸️ **Real-Time Interactive Knowledge Graph** — Visualize farms, batches, shipments, warehouses, and retailers as an explorable force-directed graph (`react-force-graph-2d`), with full Light & Dark theme support.
+- 📦 **End-to-End Batch Traceability Timeline** — Reconstructs the complete chronological journey of any batch from harvest to final retail delivery.
+- 🚨 **Defective Stock Detection** — Instantly traces a flagged quality issue back to its origin farm and identifies all co-shipped batches at risk.
+- 📊 **Analytics Dashboard** — Live KPIs and charts summarizing supply chain health, batch volumes, shipment status, and quality trends.
+- 🌗 **Light & Dark Theme Support** — Fully themed UI across chat, graph canvas, and dashboard components.
+- 🔒 **Query Guardrails** — Read-only Cypher validation layer prevents destructive or unauthorized graph mutations from LLM-generated queries.
 
-⚡ API Endpoint Specification
-POST /api/query
-Executes a natural language prompt against the graph database engine.
+---
 
-Request Header:
-Content-Type: application/json
+## 🏗️ Tech Stack
 
-Request Body:JSON{
-  "question": "Show details for BATCH-101 and its harvest date",
-  "entity_context": "None"
-}
+| Layer          | Technology                                                   |
+|----------------|----------------------------------------------------------------|
+| Frontend       | React (Vite), Tailwind CSS, Lucide React Icons, react-force-graph-2d |
+| Backend        | FastAPI (Python)                                                |
+| AI Orchestration | LangChain + Groq (`llama-3.3-70b-versatile`)                  |
+| Database       | Neo4j (Cypher Query Engine)                                     |
 
-Successful Response (200 OK):
-JSON{
-  "status": "success",
-  "generated_cypher": "MATCH (f:Farm)-[r:PRODUCED]->(b:Batch {id: 'BATCH-101'}) RETURN f, b",
-  "count": 1,
-  "results": [
-    {
-      "farm": {
-        "name": "Green Valley Farm",
-        "location": "Punjab, Pakistan"
-      },
-      "batch": {
-        "id": "BATCH-101",
-        "product": "Fresh Mangoes",
-        "quantity": "500 kg",
-        "harvest_date": "2026-06-15"
-      }
-    }
-  ]
-}
+---
 
+## 🚀 Installation & Setup Guide
 
-🛠️ Local Installation & Setup Guide
-1. Prerequisites
-Ensure you have the following installed locally:
-Python 3.10+
-Node.js v18+ & npm
-Neo4j Desktop or Neo4j AuraDB instance
+### Prerequisites
 
-2. Environment Configuration
-Create a .env file in the root directory:
+Ensure the following are installed on your system before proceeding:
 
-Code snippet
+| Requirement       | Minimum Version | Notes                                   |
+|--------------------|------------------|-------------------------------------------|
+| Python             | 3.11+            | For the FastAPI backend                    |
+| Node.js            | 18+              | For the React (Vite) frontend              |
+| npm / pnpm / yarn  | Latest           | Package manager of choice                  |
+| Neo4j              | 5.x              | Desktop, AuraDB, or self-hosted             |
+| Groq API Key       | —                | [Create one here](https://console.groq.com/) |
+| Git                | Latest           | For cloning the repository                 |
 
-GROQ_API_KEY=your_groq_api_key_here
+---
+
+### 1️⃣ Clone the Repository
+
+```bash
+git clone https://github.com/<your-org>/agrichain-ai.git
+cd agrichain-ai
+```
+
+---
+
+### 2️⃣ Neo4j Setup
+
+**Option A — Neo4j Desktop (Local Development)**
+
+1. Download and install [Neo4j Desktop](https://neo4j.com/download/).
+2. Create a new local DBMS (Neo4j 5.x) and set a database password.
+3. Start the database instance.
+4. Note the Bolt connection URI (default: `bolt://localhost:7687`).
+
+**Option B — Neo4j AuraDB (Cloud, Recommended for Production)**
+
+1. Create a free/paid instance at [Neo4j Aura](https://neo4j.com/cloud/aura/).
+2. Save the generated connection URI, username, and password securely.
+
+**Load the Schema & Sample Data**
+
+```bash
+# From the /database directory
+cypher-shell -a bolt://localhost:7687 -u neo4j -p <your-password> -f schema.cypher
+cypher-shell -a bolt://localhost:7687 -u neo4j -p <your-password> -f seed_data.cypher
+```
+
+---
+
+### 3️⃣ Backend Setup (FastAPI)
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate      # Windows: venv\Scripts\activate
+
+pip install -r requirements.txt
+```
+
+**Create a `.env` file** inside the `/backend` directory:
+
+```env
+# ---------------------------
+# Neo4j Configuration
+# ---------------------------
 NEO4J_URI=bolt://localhost:7687
 NEO4J_USERNAME=neo4j
 NEO4J_PASSWORD=your_neo4j_password
+NEO4J_DATABASE=neo4j
 
+# ---------------------------
+# Groq / LangChain Configuration
+# ---------------------------
+GROQ_API_KEY=your_groq_api_key
+GROQ_MODEL_NAME=llama-3.3-70b-versatile
 
-4. Backend Setup
-Bash
-# Initialize Python Virtual Environment
-python -m venv .venv
-source .venv/bin/activate 
+# ---------------------------
+# Application Configuration
+# ---------------------------
+APP_ENV=development
+CORS_ORIGINS=http://localhost:5173
+LOG_LEVEL=INFO
+```
 
-# On Windows: 
-.venv\Scripts\activate
+**Run the backend server:**
 
-# Install Required Dependencies
-pip install fastapi uvicorn neo4j langchain-groq pydantic python-dotenv
+```bash
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
+```
 
-# Run FastAPI Server
-uvicorn backend.app:app --reload --port 8000
+The API will be available at `http://localhost:8000`, with interactive Swagger docs at `http://localhost:8000/docs`.
 
-4. Frontend Setup
-   
-Bash
-# Navigate to Frontend Directory
+---
+
+### 4️⃣ Frontend Setup (React + Vite)
+
+```bash
 cd frontend
-# Install Dependencies
 npm install
+```
 
-# Start Vite Development Server
+**Create a `.env` file** inside the `/frontend` directory:
+
+```env
+VITE_API_BASE_URL=http://localhost:8000
+VITE_DEFAULT_THEME=light
+```
+
+**Run the development server:**
+
+```bash
 npm run dev
+```
 
-Open your browser and navigate to http://localhost:5173 or http://localhost:5174.
+The application will be available at `http://localhost:5173`.
 
-👩‍💻 Author & Maintainer
-Javeriya Waheed
-GitHub: @javeriyawaheed58
-Specialization: Artificial Intelligence, Software Engineering & Knowledge Graphs
+**Production build:**
+
+```bash
+npm run build
+npm run preview
+```
+
+---
+
+## 📡 API Endpoint Documentation
+
+### `POST /api/query`
+
+Accepts a natural language question, converts it into a validated Cypher query via the LangChain + Groq reasoning layer, executes it against Neo4j, and returns a structured JSON response suitable for both chat display and graph rendering.
+
+**Request**
+
+```http
+POST /api/query
+Content-Type: application/json
+```
+
+```json
+{
+  "query": "Show me all batches from Green Valley Farm that were flagged as defective in the last 30 days",
+  "session_id": "optional-session-uuid"
+}
+```
+
+| Field        | Type   | Required | Description                                      |
+|--------------|--------|----------|----------------------------------------------------|
+| `query`      | string | ✅ Yes    | Natural language question from the user             |
+| `session_id` | string | ❌ No     | Optional identifier for conversation/session context |
+
+**Response — `200 OK`**
+
+```json
+{
+  "success": true,
+  "generated_cypher": "MATCH (f:Farm {name: 'Green Valley Farm'})-[:PRODUCED]->(b:Batch)-[:INSPECTED_BY]->(q:QualityCheck) WHERE q.result = 'defective' AND q.date >= date() - duration('P30D') RETURN f, b, q",
+  "answer_summary": "Found 3 defective batches originating from Green Valley Farm in the last 30 days.",
+  "graph_data": {
+    "nodes": [
+      { "id": "farm_001", "label": "Green Valley Farm", "type": "Farm" },
+      { "id": "batch_045", "label": "Batch #045", "type": "Batch" }
+    ],
+    "links": [
+      { "source": "farm_001", "target": "batch_045", "relationship": "PRODUCED" }
+    ]
+  },
+  "records": [
+    { "batch_id": "batch_045", "harvest_date": "2026-07-05", "status": "defective" }
+  ],
+  "execution_time_ms": 142
+}
+```
+
+**Response — `400 Bad Request`**
+
+```json
+{
+  "success": false,
+  "error": "Query could not be interpreted. Please rephrase your question."
+}
+```
+
+**Response — `500 Internal Server Error`**
+
+```json
+{
+  "success": false,
+  "error": "Database connection failed. Please try again later."
+}
+```
+
+---
+
+## 📁 Project Folder Structure
+
+agrichain-ai/
+│
+├── backend/
+│ ├── main.py # FastAPI application entrypoint
+│ ├── requirements.txt
+│ ├── .env # Backend environment variables (not committed)
+│ ├── app/
+│ │ ├── api/
+│ │ │ ├── routes_query.py # /api/query endpoint
+│ │ │ ├── routes_graph.py # /api/graph endpoint
+│ │ │ ├── routes_traceability.py
+│ │ │ └── routes_analytics.py
+│ │ ├── core/
+│ │ │ ├── config.py # Environment/config loader
+│ │ │ └── security.py
+│ │ ├── services/
+│ │ │ ├── langchain_service.py # LangChain + Groq orchestration
+│ │ │ ├── cypher_guard.py # Query validation/guardrails
+│ │ │ └── neo4j_service.py # Neo4j driver + query execution
+│ │ ├── models/
+│ │ │ └── schemas.py # Pydantic request/response models
+│ │ └── utils/
+│ │ └── formatters.py # Graph JSON formatting helpers
+│ └── tests/
+│ ├── test_query_endpoint.py
+│ └── test_cypher_guard.py
+│
+├── frontend/
+│ ├── index.html
+│ ├── package.json
+│ ├── vite.config.js
+│ ├── tailwind.config.js
+│ ├── .env
+│ └── src/
+│ ├── main.jsx
+│ ├── App.jsx
+│ ├── components/
+│ │ ├── ChatInterface/
+│ │ ├── KnowledgeGraph/ # react-force-graph-2d wrapper
+│ │ ├── TraceabilityTimeline/
+│ │ ├── AnalyticsDashboard/
+│ │ └── ThemeToggle/
+│ ├── context/
+│ │ └── ThemeContext.jsx
+│ ├── hooks/
+│ │ └── useQueryApi.js
+│ ├── services/
+│ │ └── api.js # Axios/Fetch API client
+│ └── styles/
+│ └── index.css
+│
+├── database/
+│ ├── schema.cypher # Node/relationship constraints & indexes
+│ └── seed_data.cypher # Sample farm/batch/shipment data
+│
+├── docs/
+│ ├── AgriChain_AI_Technical_Documentation.md
+│ └── screenshots/
+│
+├── .gitignore
+├── LICENSE
+└── README.md
+
+
+---
+
+## 🖼️ Demo Screenshots
+
+> _Screenshots to be added prior to release._
+
+| Chat & Query Interface | Interactive Knowledge Graph |
+|--------------------------|--------------------------------|
+| `docs/screenshots/chat-interface.png` | `docs/screenshots/knowledge-graph.png` |
+
+| Batch Traceability Timeline | Analytics Dashboard |
+|--------------------------------|---------------------------|
+| `docs/screenshots/traceability-timeline.png` | `docs/screenshots/analytics-dashboard.png` |
+
+| Light Theme | Dark Theme |
+|---------------|--------------|
+| `docs/screenshots/light-theme.png` | `docs/screenshots/dark-theme.png` |
+
+---
+
+## 🗺️ Roadmap
+
+- [ ] Multi-language natural language query support
+- [ ] Role-based access control (RBAC) for query permissions
+- [ ] Export traceability reports as PDF
+- [ ] Predictive analytics for supply chain risk scoring
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome. Please open an issue first to discuss what you would like to change.
+
+## 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
